@@ -1,0 +1,28 @@
+<% include header %>
+
+<button type="submit" class="btn btn-default" id="btnLogOut">LogOut</button>
+
+<script>
+  const btnLogOut = document.getElementById('btnLogOut');
+
+  btnLogOut.addEventListener('click', e => {
+    firebase.auth().signOut();
+    // btnLogout.classList.add('hide');
+    console.log(' logout clicked');
+  });
+
+
+  firebase.auth().onAuthStateChanged(firebaseUser => {
+    if(firebaseUser){
+      console.log(firebaseUser);
+      // btnLogout.classList.remove('hide');
+//      window.location.replace('/home');
+
+    }else{
+      console.log("not logged in");
+      // btnLogout.classList.add('hide');
+       window.location.replace('/');
+    }
+  });
+</script>
+<% include footer %>
