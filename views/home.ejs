@@ -1,28 +1,57 @@
 <% include header %>
 
-<button type="submit" class="btn btn-default" id="btnLogOut">LogOut</button>
+<nav class=" navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+  <div class="container">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+            data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#">Fixed navbar</a>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Disabled</a>
+        </li>
+      </ul>
+      <form class="form-inline mt-2 mt-md-0">
+        <button type="submit" class="btn btn-default" id="btnLogOut">Log out</button>
+      </form>
+    </div>
+  </div>
+</nav>
+<div class="container">
 
-<script>
-  const btnLogOut = document.getElementById('btnLogOut');
+  <div class="row">
+    <form class="col align-self-center">
+      <div class="form-group ">
+        <label for="inputSenderName">SenderName</label>
+        <!--class="col-sm-2 col-form-label"-->
+        <div>
+          <!--class="col-sm-10"-->
+          <input type="text" class="form-control" id="senderName">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="exampleTextarea">Message</label>
+        <textarea title="nothing" class="form-control" id="messageToSend" rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="recipients">Recipients (please separate by pressing the enter key)</label>
+        <textarea title="nothing" class="form-control" id="recipients" rows="3"></textarea>
+      </div>
 
-  btnLogOut.addEventListener('click', e => {
-    firebase.auth().signOut();
-    // btnLogout.classList.add('hide');
-    console.log(' logout clicked');
-  });
-
-
-  firebase.auth().onAuthStateChanged(firebaseUser => {
-    if(firebaseUser){
-      console.log(firebaseUser);
-      // btnLogout.classList.remove('hide');
-//      window.location.replace('/home');
-
-    }else{
-      console.log("not logged in");
-      // btnLogout.classList.add('hide');
-       window.location.replace('/');
-    }
-  });
-</script>
+      <button id="sendMsg" type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="/js/home.js"></script>
 <% include footer %>
+
