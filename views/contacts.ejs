@@ -1,3 +1,43 @@
 <% include header %>
+	<div class="container">
+		<div class="row">
+			<div class="col"></div>
+			<div></div>
+		</div>
+	</div>
 
-<% include footer %>
+	<div class="container">
+		<div class="row">
+			<div class="col-7">
+				<form action="">
+					<div class="form-group row">
+						<label for="user_name" class="col-4 col-form-label">Name</label>
+						<div class="col-8">
+							<input class="form-control" type="text" placeholder="put the Users name here" id="userName">
+						</div>
+					</div>
+
+					<!-- <div class="form-group row">
+						<label for="user_bio" class="col-4 col-form-label">Bio</label>
+						<div class="col-8">
+							<textarea class="form-control" type="text" placeholder="Please put user Bio Here" id="userBio"></textarea> (optional)
+						</div>
+					</div> -->
+
+					<div class="form-group row">
+						<label for="user_tel" class="col-4 col-form-label">Telephone Number</label>
+						<div class="col-8">
+							<input class="form-control" type="tel" placeholder="e.g 08012345678" id="userTel">
+						</div>
+					</div>
+
+					<button type="submit" class="btn btn-primary" id="addContact">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="/js/logout.js"></script>
+	<script src="/js/home.js"></script>
+
+	<% include footer %>
