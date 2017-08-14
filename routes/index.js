@@ -13,10 +13,10 @@ router.get('/home', function (req, res) {
 	});
 });
 router.post('/contacts', function (req, res) {
-	// console.log(req.body.contactsFromDb)
-	res.render('contacts', {
-		contacts: req.body.contactsFromDb
-	});
+	console.log(req.body.contactsFromDb)
+	// res.render('contacts', {
+	// 	contacts: req.body.contactsFromDb
+	// });
 
 })
 router.get('/contacts', function (req, res) {

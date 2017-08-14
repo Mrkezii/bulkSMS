@@ -129,7 +129,6 @@ if (addContact) {
 				});
 				nodeNum.on('value', function (snapshot) {
 					// console.log(snapshot.childSnapshot.val())
-
 					snapshot.forEach(function (childSnapshot) {
 						// childData will be the actual contents of the child
 						var childData = childSnapshot.val();
