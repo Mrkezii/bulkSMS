@@ -13,6 +13,7 @@ let username = "davidkezi6@gmail.com";
 let apiKey = '76d087b2cf3ac21af694c5f1e017c02a16d8d552';
 let flash = 0;
 let senderName;
+let isCSV;
 
 
 
@@ -27,8 +28,75 @@ if (sendMsg) {
 		senderName = document.getElementById('senderName').value;
 		console.log("message is: " + message);
 		sendSMS(username, apiKey, flash, senderName, message, recipients);
-	})
-};
+	});
+
+	function handleFiles(files) {
+		if (window.FileReader) {
+			getAsText(files[0]);
+		} else {
+			alert('cannot read files from this browser')
+		}
+	}
+
+	function getAsText(fileToRead) {
+		let reader = new FileReader();
+		// Read file into memory as UTF-8      		
+		reader.readAsText(fileToRead);
+		// Handle errors load
+		reader.onload = loadHandler;
+		reader.onerror = errorHandler;
+	}
+	function loadHandler(event) {
+		let csv = event.target.result;
+		processData(csv);
+	}
+	function errorHandler(evt) {
+		if (evt.target.error.name == "NotReadableError") {
+			alert("Canno't read file !");
+		}
+	}
+	function processData(csv) {
+		// let allTextLines = csv.split('\n');
+		// let lines = [];
+		// for (let i = 0; i < allTextLines.length; i++) {
+		// 	lines.push(allTextLines.shift().split(','));
+		// }
+		// console.log(csv);
+		// drawOutput(lines);
+
+		let allTextLines = csv.split(/\r\n|\n/);
+		let lines = [];
+		for (let i = 0; i < allTextLines.length; i++) {
+			let data = allTextLines[i].split('\r');
+			// let tarr = [];
+			// for (let j = 0; j < data.length; j++) {
+			// 	tarr.push(data[j]);
+			// }
+			lines.push(data);
+		}
+		david(lines)
+	}
+	function david(names) {
+		// the line below removes all square brackets, commas and quotation marks and converts them to a new line so they can be passed to the sendSMS function
+		let nameString = JSON.stringify(names).replace(/[\[\]\,"]+/g, '\n');
+		// console.log(nameString.replace(/[\[\]\,"]+/g, '\n'))
+		// let dada = names.replace
+		// isCSV = true;
+		// let dan = []
+		message = document.getElementById('messageToSend').value;
+		// recipients = document.getElementById('recipients').value;
+		senderName = document.getElementById('senderName').value;
+		console.log("message is: " + message);
+		recipients = nameString;
+		sendSMS(username, apiKey, flash, senderName, message, nameString)
+
+		// replace(/\n/g, ",").split(",");
+	}
+}
+
+
+
+
 
 const database = firebase.database();
 
@@ -39,7 +107,7 @@ if (addContact) {
 	addContact.addEventListener('click', (e) => {
 		e.preventDefault(); // prevents form from refreshing page
 		// let nodeNum = firebase.database().ref('Contacts/user/' + nodeNum);
-		let nodeNum = firebase.database().ref('user');
+		let nodeNum = firebase.database().ref('user').orderByKey();
 		let keys = []
 		let num;
 
@@ -49,15 +117,45 @@ if (addContact) {
 		if (userName && userTel) {
 			let nameToDb = userName;
 			let phoneNumToDb = userTel
+
+
 			nodeNum.once('value').then(function (snapshot) {
 				num = snapshot.numChildren();
-				console.log(JSON.stringify(snapshot.val()))
+				// console.log(JSON.stringify(snapshot.val()))
 				let newNum = num + 1;
-				database.ref('user/user ' + newNum).set({
+				database.ref('user/user_' + newNum).set({
 					name: nameToDb,
 					phoneNum: phoneNumToDb
 				});
-			});
+				nodeNum.on('value', function (snapshot) {
+					// console.log(snapshot.childSnapshot.val())
+
+					snapshot.forEach(function (childSnapshot) {
+						// childData will be the actual contents of the child
+						var childData = childSnapshot.val();
+						// console.log(childData)
+						keys.push(childData);
+					});
+					console.log(JSON.stringify(keys))
+					// let contactArray = keys
+					$.ajax({
+						type: "GET",
+						url: "/contacts",
+						// contentType: 'application/json',
+						data: {
+							contactsFromDb: keys
+						},
+						success: function () {
+							console.log('success');
+							// document.getElementById('dan').innerHTML
+						}
+					})
+
+				})
+
+			})
+
+
 
 			console.log("data of " + nameToDb + " pushed to Firebase")
 			document.getElementById('userName').value = "";
@@ -74,7 +172,11 @@ function sendSMS(username, apiKey, flash, senderName, message, recipients) {
 	let gsmNumber = {};
 	gsmNumber['gsm'] = [];
 	let prefix = '234';
+	// if (isCSV) {
+	// 	let numberArr = recipients;
+	// } else {
 	let numberArr = recipients.split('\n');
+	// }
 	$.each(numberArr, (index, value) => {
 		let number = value.trim();
 		// let id = "sms_" + Math.random().toString(36).slice(2);
