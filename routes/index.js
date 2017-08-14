@@ -13,7 +13,7 @@ router.get('/home', function (req, res) {
 	});
 });
 router.post('/contacts', function (req, res) {
-	console.log(req.body.contactsFromDb)
+	console.log('gotten')
 	// res.render('contacts', {
 	// 	contacts: req.body.contactsFromDb
 	// });
