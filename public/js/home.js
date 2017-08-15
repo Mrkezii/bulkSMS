@@ -15,89 +15,6 @@ let flash = 0;
 let senderName;
 let isCSV;
 
-
-
-
-// send Bulk Message on click listener, in home.ejs
-if (sendMsg) {
-	// TODO 
-	// 1. refactor the code in this block and bring the variables to get the element id outside and leave the .values inside the functions
-	sendMsg.addEventListener('click', (e) => {
-		message = document.getElementById('messageToSend').value;
-		recipients = document.getElementById('recipients').value;
-		senderName = document.getElementById('senderName').value;
-		console.log("message is: " + message);
-		sendSMS(username, apiKey, flash, senderName, message, recipients);
-	});
-
-	function handleFiles(files) {
-		if (window.FileReader) {
-			getAsText(files[0]);
-		} else {
-			alert('cannot read files from this browser')
-		}
-	}
-
-	function getAsText(fileToRead) {
-		let reader = new FileReader();
-		// Read file into memory as UTF-8      		
-		reader.readAsText(fileToRead);
-		// Handle errors load
-		reader.onload = loadHandler;
-		reader.onerror = errorHandler;
-	}
-	function loadHandler(event) {
-		let csv = event.target.result;
-		processData(csv);
-	}
-	function errorHandler(evt) {
-		if (evt.target.error.name == "NotReadableError") {
-			alert("Canno't read file !");
-		}
-	}
-	function processData(csv) {
-		// let allTextLines = csv.split('\n');
-		// let lines = [];
-		// for (let i = 0; i < allTextLines.length; i++) {
-		// 	lines.push(allTextLines.shift().split(','));
-		// }
-		// console.log(csv);
-		// drawOutput(lines);
-
-		let allTextLines = csv.split(/\r\n|\n/);
-		let lines = [];
-		for (let i = 0; i < allTextLines.length; i++) {
-			let data = allTextLines[i].split('\r');
-			// let tarr = [];
-			// for (let j = 0; j < data.length; j++) {
-			// 	tarr.push(data[j]);
-			// }
-			lines.push(data);
-		}
-		david(lines)
-	}
-	function david(names) {
-		// the line below removes all square brackets, commas and quotation marks and converts them to a new line so they can be passed to the sendSMS function
-		let nameString = JSON.stringify(names).replace(/[\[\]\,"]+/g, '\n');
-		// console.log(nameString.replace(/[\[\]\,"]+/g, '\n'))
-		// let dada = names.replace
-		// isCSV = true;
-		// let dan = []
-		message = document.getElementById('messageToSend').value;
-		// recipients = document.getElementById('recipients').value;
-		senderName = document.getElementById('senderName').value;
-		console.log("message is: " + message);
-		recipients = nameString;
-		sendSMS(username, apiKey, flash, senderName, message, nameString)
-
-		// replace(/\n/g, ",").split(",");
-	}
-}
-
-
-
-
-
 const database = firebase.database();
 
 
@@ -137,6 +54,7 @@ if (addContact) {
 					});
 					console.log(JSON.stringify(keys))
 					// let contactArray = keys
+
 					$.ajax({
 						type: "GET",
 						url: "/contacts",
@@ -167,15 +85,91 @@ if (addContact) {
 	});
 }
 
-function sendSMS(username, apiKey, flash, senderName, message, recipients) {
+
+// send Bulk Message on click listener, in home.ejs
+if (sendMsg) {
+	// TODO 
+	// 1. refactor the code in this block and bring the variables to get the element id outside and leave the .values inside the functions
+	sendMsg.addEventListener('click', (e) => {
+		message = document.getElementById('messageToSend').value;
+		recipients = document.getElementById('recipients').value;
+		senderName = document.getElementById('senderName').value;
+		console.log("message is: " + message);
+		getRecepients(recipients);
+		sendSMS(username, apiKey, flash, senderName, message);
+	});
+
+}
+
+function handleFiles(files) {
+	if (window.FileReader) {
+		getAsText(files[0]);
+	} else {
+		alert('cannot read files from this browser')
+	}
+}
+
+function getAsText(fileToRead) {
+	let reader = new FileReader();
+	// Read file into memory as UTF-8      		
+	reader.readAsText(fileToRead);
+	// Handle errors load
+	reader.onload = loadHandler;
+	reader.onerror = errorHandler;
+}
+function loadHandler(event) {
+	let csv = event.target.result;
+	processData(csv);
+}
+function errorHandler(evt) {
+	if (evt.target.error.name == "NotReadableError") {
+		alert("Canno't read file !");
+	}
+}
+function processData(csv) {
+	// let allTextLines = csv.split('\n');
+	// let lines = [];
+	// for (let i = 0; i < allTextLines.length; i++) {
+	// 	lines.push(allTextLines.shift().split(','));
+	// }
+	// console.log(csv);
+	// drawOutput(lines);
+
+	let allTextLines = csv.split(/\r\n|\n/);
+	let lines = [];
+	for (let i = 0; i < allTextLines.length; i++) {
+		let data = allTextLines[i].split('\r');
+		// let tarr = [];
+		// for (let j = 0; j < data.length; j++) {
+		// 	tarr.push(data[j]);
+		// }
+		lines.push(data);
+	}
+	stringifyData(lines)
+}
+
+function stringifyData(names) {
+	// the line below removes all square brackets, commas and quotation marks and converts them to a new line so they can be passed to the sendSMS function
+	let nameString = JSON.stringify(names).replace(/[\[\]\,"]+/g, '\n');
+	// console.log(nameString.replace(/[\[\]\,"]+/g, '\n'))
+	// let dada = names.replace
+	// isCSV = true;
+	// let dan = []
+	message = document.getElementById('messageToSend').value;
+	// recipients = document.getElementById('recipients').value;
+	senderName = document.getElementById('senderName').value;
+	console.log("message is: " + message);
+	// recipients = nameString;
+	getRecepients(nameString)
+
+	// replace(/\n/g, ",").split(",");
+}
+
+function getRecepients(recipients) {
 	let gsmNumber = {};
 	gsmNumber['gsm'] = [];
 	let prefix = '234';
-	// if (isCSV) {
-	// 	let numberArr = recipients;
-	// } else {
 	let numberArr = recipients.split('\n');
-	// }
 	$.each(numberArr, (index, value) => {
 		let number = value.trim();
 		// let id = "sms_" + Math.random().toString(36).slice(2);
@@ -191,6 +185,11 @@ function sendSMS(username, apiKey, flash, senderName, message, recipients) {
 			// 'msgid': id
 		});
 	});
+	return gsmNumber
+
+}
+
+function sendSMS(username, apiKey, flash, senderName, message) {
 
 	// console.log("gsm"+ JSON.stringify(gsm));
 	let sms = {
@@ -205,7 +204,7 @@ function sendSMS(username, apiKey, flash, senderName, message, recipients) {
 				'apikey': apiKey,
 			},
 			'message': sms,
-			'recipients': gsmNumber
+			'recipients': getRecepients()  //changed gsmNumber to get..
 		}
 	};
 	console.log(JSON.stringify(request));
