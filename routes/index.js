@@ -22,6 +22,9 @@ router.post('/contacts', function (req, res) {
 });
 
 router.post('/sms', SmsController.sendSMS);
+// router.post('/sms', function (req, res) {
+// 	console.log(req.body.csv)
+// });
 
 router.get('/contacts', function (req, res) {
 	res.render('contacts', {
