@@ -16,6 +16,7 @@
     "ejs": "^2.3.1",
     "express": "^4.13.3",
     "google-contacts": "^0.1.5",
+    "jquery": "^3.2.1",
     "morgan": "^1.6.1",
     "serve-favicon": "^2.3.0"
   },
@@ -31,4 +32,3 @@
     "supertest": "^2.0.0"
   }
 }
-

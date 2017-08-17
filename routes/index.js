@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+let SmsController = require('../controllers/SmsController');
 
 /* GET home page. */
 router.get('/', function (req, res) {
@@ -18,7 +19,10 @@ router.post('/contacts', function (req, res) {
 	// 	contacts: req.body.contactsFromDb
 	// });
 
-})
+});
+
+router.post('/sms', SmsController.sendSMS);
+
 router.get('/contacts', function (req, res) {
 	res.render('contacts', {
 		title: 'homepage'
