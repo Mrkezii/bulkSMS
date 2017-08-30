@@ -1,14 +1,21 @@
 exports.sendSMS = function (req, res) {
-	let name = req.body.senderName;
-	let message = req.body.message;
-	let recipients = req.body.recipients;
-	let csv = req.body.csv;
+	console.log(req.body.senderName + ' ' + req.body.messageToSend)
+	console.log(req.body.fileInput)
+}
+	// =========================================================================================
 
-	console.log(forms.values())
+	// =========================================================================================
+
+
+
+
+
 	// fs.readFile(req.files.file.path, function (err, data) {
 	// 	// Do something with the data (which holds the file information)
 	// 	console.log('david')
 	// });
+
+
 	// 	function handleFiles(files) {
 	// 		if (window.FileReader) {
 	// 			getAsText(files[0]);
@@ -104,7 +111,7 @@ exports.sendSMS = function (req, res) {
 
 	// 		// sendSMS(username, apiKey, flash, senderName, message)
 
-}
+// }
 
 /*function stringifyData(names) {
   // the line below removes all square brackets, commas and quotation marks and converts them to a new line so they can be passed to the sendSMS function
@@ -155,36 +162,36 @@ function david(anu) {
 }
 
 
-function sendSMS(username, apiKey, flash, senderName, message) {
-  david();
-  // function david(anu) {
-  // 	console.log(JSON.stringify(anu));
-  // }
-  // david();
-  // console.log(gsmNumber);
-  // // console.log("gsm"+ JSON.stringify(gsm));
-  // let sms = {
-  // 	'sender': senderName,
-  // 	'messagetext': message,
-  // 	'flash': flash
-  // };
-  // let request = {
-  // 	'SMS': {
-  // 		'auth': {
-  // 			'username': username,
-  // 			'apikey': apiKey,
-  // 		},
-  // 		'message': sms,
-  // 		'recipients': getRecepients()  //changed gsmNumber to get..
-  // 	}
-  // };
-  // console.log(JSON.stringify(request));
-  // $.ajax({
-  // 	type: "post",
-  // 	url: "http://sms.easysmsnigeria.com/api/sendsms.json",
-  // 	data: JSON.stringify(request),
-  // 	contentType: "application/json",
-  // 	success: (response) => {
+// function sendSMS(username, apiKey, flash, senderName, message) {
+//   david();
+//   // function david(anu) {
+//   // 	console.log(JSON.stringify(anu));
+//   // }
+//   // david();
+//   // console.log(gsmNumber);
+//   // // console.log("gsm"+ JSON.stringify(gsm));
+//   // let sms = {
+//   // 	'sender': senderName,
+//   // 	'messagetext': message,
+//   // 	'flash': flash
+//   // };
+//   // let request = {
+//   // 	'SMS': {
+//   // 		'auth': {
+//   // 			'username': username,
+//   // 			'apikey': apiKey,
+//   // 		},
+//   // 		'message': sms,
+//   // 		'recipients': getRecepients()  //changed gsmNumber to get..
+//   // 	}
+//   // };
+//   // console.log(JSON.stringify(request));
+//   // $.ajax({
+//   // 	type: "post",
+//   // 	url: "http://sms.easysmsnigeria.com/api/sendsms.json",
+//   // 	data: JSON.stringify(request),
+//   // 	contentType: "application/json",
+//   // 	success: (response) => {
   // 		console.log($.parseJSON(response));
   // 		let data = $.parseJSON(response.status);
   // 		if (data === 'success') {

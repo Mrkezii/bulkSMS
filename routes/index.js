@@ -1,7 +1,12 @@
 var express = require('express');
 var router = express.Router();
 let SmsController = require('../controllers/SmsController');
+var bodyParser = require('body-parser');
 
+// Add this line below
+router.use(bodyParser.urlencoded({ extended: false }))
+
+router.use(bodyParser.json());
 /* GET home page. */
 router.get('/', function (req, res) {
 	res.render('index', {
